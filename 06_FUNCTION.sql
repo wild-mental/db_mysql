@@ -20,8 +20,8 @@ SELECT * FROM registered_user WHERE CHAR_LENGTH(`name`) = 5;
 
 -- 함수 호출 없이도 글자 수를 필터링 할 수 있는 방법 
 -- _, % 문자 사용 LIKE 검색
-SELECT `name`, CHAR_LENGTH(`name`) FROM registered_user WHERE `name` LIKE "_____";
-SELECT `name`, CHAR_LENGTH(`name`) FROM registered_user WHERE `name` LIKE "_____%";
+SELECT `name`, CHAR_LENGTH(`name`) FROM registered_user WHERE `name` LIKE '_____';
+SELECT `name`, CHAR_LENGTH(`name`) FROM registered_user WHERE `name` LIKE '_____%';
 
 -- 숫자함수 호출을 위해 컬럼 추가
 ALTER TABLE registered_user ADD COLUMN weight DECIMAL(5, 2);
