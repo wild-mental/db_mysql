@@ -1,6 +1,11 @@
+CREATE TABLE customer (
+    customer_id   int PRIMARY KEY,
+    customer_name varchar(20)
+);
+
 CREATE TABLE drink_order (
    id int PRIMARY KEY,
-   customer_id int REFERENCES Customers(customer_id) ON DELETE NO ACTION,
+   customer_id int REFERENCES Customer(customer_id) ON DELETE NO ACTION,
    ordered_at date,
    total_amount decimal(10,2)
 );
