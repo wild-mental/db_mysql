@@ -5,7 +5,7 @@ CREATE TABLE customer (
 
 CREATE TABLE drink_order (
    id int PRIMARY KEY,
-   customer_id int REFERENCES Customer(customer_id) ON DELETE NO ACTION,
+   customer_id int REFERENCES customer(customer_id) ON DELETE NO ACTION,
    ordered_at date,
    total_amount decimal(10,2)
 );
