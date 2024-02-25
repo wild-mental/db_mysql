@@ -9,7 +9,7 @@ use sys; -- use bitcamp06;
 show DATABASES;
 
 -- 테이블생성
-CREATE TABLE user_tbl (
+CREATE TABLE service_user (
 	user_num int(5) PRIMARY KEY AUTO_INCREMENT, -- INSERT시 숫자 자동배정
     user_name varchar(10) NOT NULL,
     user_birth_year int NOT NULL,
@@ -22,46 +22,46 @@ CREATE TABLE user_tbl (
 SELECT * FROM 데이터베이스명.테이블명; 
 형식으로 조회해야 합니다.
 그러나 use 구문 등을 이용해 데이터베이스를 지정한 경우는 데이터베이스를 생략할 수 있습니다.*/
-SELECT * FROM bitcamp06.user_tbl;
+SELECT * FROM bitcamp06.service_user;
 use bitcamp06;
 			-- pk가 걸린 컬럼은 null을 주면 알아서 숫자 배정
-INSERT INTO user_tbl VALUES(null, '김자바', 1987, '서울', 180, '2020-05-03');
-INSERT INTO user_tbl VALUES(null, '이연희', 1992, '경기', 164, '2020-05-12');
-INSERT INTO user_tbl VALUES(null, '박종현', 1990, '부산', 177, '2020-06-01');
-INSERT INTO user_tbl
+INSERT INTO service_user VALUES(null, '김자바', 1987, '서울', 180, '2020-05-03');
+INSERT INTO service_user VALUES(null, '이연희', 1992, '경기', 164, '2020-05-12');
+INSERT INTO service_user VALUES(null, '박종현', 1990, '부산', 177, '2020-06-01');
+INSERT INTO service_user
 	(user_name, user_birth_year, user_address, user_height, entry_date)
 	VALUES ('신영웅', 1995, '광주', 172, '2020-07-15');
 
 -- WHERE 조건절을 이용해서 조회해보겠습니다.
 -- 90년대 이후 출생자만 조회하기      user_birth_year가 1989보다 큰 유저만
-SELECT * FROM user_tbl WHERE user_birth_year > 1989;
+SELECT * FROM service_user WHERE user_birth_year > 1989;
 -- 키 175 미만만 조회하는 SELECT 구문을 만들어서 보내주세요.
-SELECT * FROM user_tbl WHERE user_height < 175;
+SELECT * FROM service_user WHERE user_height < 175;
 -- AND 혹은 OR을 이용해 조건을 두 개 이상 걸수도 있습니다.
-SELECT * FROM user_tbl WHERE user_num > 2 AND user_height < 178; 
+SELECT * FROM service_user WHERE user_num > 2 AND user_height < 178; 
 
 -- UPDATE FROM 테이블명 set 컬럼명1=대입값1, 컬럼명2=대입값2....;
 -- 주의! WHERE를 걸지 않으면 해당 컬럼의 모든 값을 다 통일시켜버립니다.
-UPDATE user_tbl SET user_address = '서울';
+UPDATE service_user SET user_address = '서울';
 
 -- WHERE절 없는 UPDATE 구문 실행 방지, 0대입시 해제, 1대입시 실행
 set sql_safe_updates=1;
 
 -- 테이블이 존재하지 않다면 삭제구문을 실행하지 않아 에러를 발생시키지 않음
-DROP TABLE IF EXISTS user_tbl;
+DROP TABLE IF EXISTS service_user;
 
 
-SELECT * FROM user_tbl;
+SELECT * FROM service_user;
 
 -- 1번유저 김자바가 이사를 강원으로 갔습니다. 지역을 서울에서 강원으로 바꿔보겠습니다.
-UPDATE user_tbl SET user_address = '강원' WHERE user_num = 1;
+UPDATE service_user SET user_address = '강원' WHERE user_num = 1;
 
 -- 삭제는 특정컬럼만 떼서 삭제할일이 없으므로 SELECT와는 달리 * 등을 쓰지 않습니다.
 -- 박종현이 DB에서 삭제되는 상황, safety 모드를 우회하거나 cli에서 해주세요.
-DELETE FROM user_tbl WHERE user_name = '박종현';
+DELETE FROM service_user WHERE user_name = '박종현';
 
 -- 만약 WHERE없이 삭제시 truncate와 비슷하게 작동합니다.
-DELETE FROM user_tbl;
+DELETE FROM service_user;
 
 -- 다중 INSERT구문을 사용해보겠습니다.
 /* INSERT INTO 테이블명 (컬럼1, 컬럼2, 컬럼3...)
@@ -70,15 +70,15 @@ DELETE FROM user_tbl;
             (값7, 값8, 값9 ...),
             ...;
 	컬럼명은 모든 컬럼에 값을 집어넣을시 생략 가능합니다.*/
-INSERT INTO user_tbl
+INSERT INTO service_user
 	VALUES (null, '강개발', 1994, '경남', 178, '2020-08-02'),
 			(null, '최지선', 1998, '전북', 170, '2020-08-03'),
             (null, '류가연', 2000, '전남', 158, '2020-08-20');
-SELECT * FROM user_tbl;		
+SELECT * FROM service_user;		
             
 
--- INSERT~SELECT 를 이용한 데이터 삽입을 위해 user_tbl과 동일한 테이블을 하나 더 만듭니다.
-CREATE TABLE user_tbl2 (
+-- INSERT~SELECT 를 이용한 데이터 삽입을 위해 service_user과 동일한 테이블을 하나 더 만듭니다.
+CREATE TABLE service2_user (
 	user_num int(5) PRIMARY KEY AUTO_INCREMENT, -- INSERT시 숫자 자동배정
     user_name varchar(10) NOT NULL,
     user_birth_year int NOT NULL,
@@ -87,14 +87,14 @@ CREATE TABLE user_tbl2 (
     entry_date date -- 회원가입일
 );
 
--- user_tbl2에 user_tbl의 자료 중 생년 1995년 이후인 사람의 자료만 복사해서 삽입하기
-INSERT INTO user_tbl2 
-	SELECT * FROM user_tbl
+-- service2_user에 service_user의 자료 중 생년 1995년 이후인 사람의 자료만 복사해서 삽입하기
+INSERT INTO service2_user 
+	SELECT * FROM service_user
     WHERE user_birth_year > 1995;
 
 -- 두 번째 테이블인 구매내역을 나타내는 buy_tbl을 생성해보겠습니다.
 -- 어떤 유저가 무엇을 샀는지 저장하는 테이블입니다.
--- 어떤 유저는 반드시 user_tbl에 존재하는 유저만 추가할 수 있습니다.
+-- 어떤 유저는 반드시 service_user에 존재하는 유저만 추가할 수 있습니다.
 CREATE TABLE buy_tbl (
 	buy_num INT AUTO_INCREMENT PRIMARY KEY,
 	user_num INT(5) NOT NULL,
@@ -119,53 +119,53 @@ INSERT INTO buy_tbl values(null, 99, '핵미사일', '전략무기', 100000, 5);
 DELETE FROM buy_tbl WHERE buy_num = 6;
 
 -- 이제 외래키 설정을 통해서, 있지 않은 유저는 등록될 수 없도록 처리하겠습니다.
--- buy_tbl이 user_tbl을 참조하는 관계임.
+-- buy_tbl이 service_user을 참조하는 관계임.
 		-- 참조하는                                   -- 참조자의 어떤 컬럼
 ALTER TABLE buy_tbl ADD CONSTRAINT FK_buy_tbl FOREIGN KEY (user_num)
 		-- 참조당하는 테이블과 컬럼명
-	REFERENCES user_tbl(user_num);
+	REFERENCES service_user(user_num);
 
 -- 참조가 끝난 상태에서 있지도 않은 99번 유저의 구매내역을 넣어보겠습니다.
 INSERT INTO buy_tbl values(null, 199, '오픈카', '승용차', 1000, 5);
 
 SELECT * FROM buy_tbl;
-SELECT * FROM user_tbl;
--- 만약 user_tbl에 있는 요소를 삭제시, buy_tbl에 구매내역이 남은 user_num을 삭제한다면
+SELECT * FROM service_user;
+-- 만약 service_user에 있는 요소를 삭제시, buy_tbl에 구매내역이 남은 user_num을 삭제한다면
 -- 특별히 on_delete를 걸지 않은 경우는 참조 무결성 원칙에 위배되어 삭제가 되지 않습니다.
-DELETE FROM user_tbl WHERE user_num=4;
+DELETE FROM service_user WHERE user_num=4;
 
--- 만약 추가적인 설정 없이 user_tbl의 4번유저를 삭제하고 싶다면
+-- 만약 추가적인 설정 없이 service_user의 4번유저를 삭제하고 싶다면
 -- 먼저 buy_tbl의 4번유저가 남긴 구매내역을 모두 삭제해야 합니다.
 DELETE FROM buy_tbl WHERE buy_num = 1;
 DELETE FROM buy_tbl WHERE buy_num = 2;
 
--- 임시테이블 user_tbl2 확인
-SELECT * FROM user_tbl2;
+-- 임시테이블 service2_user 확인
+SELECT * FROM service2_user;
 
---  원본테이블 user_tbl 확인
-SELECT * FROM user_tbl;
+--  원본테이블 service_user 확인
+SELECT * FROM service_user;
 
--- DELETE FROM을 이용해서 user_tbl2의 2020-08-15일 이후 가입자를 삭제해보세요.
-DELETE FROM user_tbl2 WHERE entry_date > '2020-08-15';
+-- DELETE FROM을 이용해서 service2_user의 2020-08-15일 이후 가입자를 삭제해보세요.
+DELETE FROM service2_user WHERE entry_date > '2020-08-15';
 
 -- DELETE FROM을 이용해서 2020-08-03일 가입한 유저만 지목해서 삭제하는 쿼리문을 작성해주세요.
-DELETE FROM user_tbl2 WHERE entry_date = '2020-08-03';
+DELETE FROM service2_user WHERE entry_date = '2020-08-03';
 
 -- DISTINCT 실습을 위해 데이터를 몇 개 더 집어넣습니다.
-INSERT INTO user_tbl VALUES (null, '이자바', 1994, '서울', 178, '2020-09-01');
-INSERT INTO user_tbl VALUES (null, '신디비', 1992, '경기', 164, '2020-09-01');
-INSERT INTO user_tbl VALUES (null, '최다희', 1998, '경기', 158, '2020-09-01');
+INSERT INTO service_user VALUES (null, '이자바', 1994, '서울', 178, '2020-09-01');
+INSERT INTO service_user VALUES (null, '신디비', 1992, '경기', 164, '2020-09-01');
+INSERT INTO service_user VALUES (null, '최다희', 1998, '경기', 158, '2020-09-01');
 
 -- 데이터 삽입 확인
-SELECT * FROM user_tbl;
+SELECT * FROM service_user;
 
 -- DISTINCT는 특정 컬럼에 들어있는 데이터의 "종류"만 한 번씩 나열해 보여줍니다.
 -- 교안을 보고 user_birth_year에 들어있는 데이터의 종류를 DISTINCT를 이용해 조회해보세요.
-SELECT DISTINCT user_birth_year FROM user_tbl;
-SELECT DISTINCT user_address FROM user_tbl;
+SELECT DISTINCT user_birth_year FROM service_user;
+SELECT DISTINCT user_address FROM service_user;
 
 -- 컬럼 이름을 바꿔서 조회하고 싶다면, 컬럼명 AS 바꿀이름 형식을 따라주시면 됩니다.
-SELECT user_name AS 유저명 FROM user_tbl;
-SELECT user_name AS 유저명, entry_date AS 가입날짜 FROM user_tbl;
+SELECT user_name AS 유저명 FROM service_user;
+SELECT user_name AS 유저명, entry_date AS 가입날짜 FROM service_user;
 
 
